@@ -13,6 +13,7 @@ class User:
         else:
             self.password = password
 
+
     def save(self):
         user_data = {
             "email": self.email,
@@ -20,24 +21,54 @@ class User:
         }
         db.users.insert_one(user_data)
 
-    def update_prefs(self, prefs):
-        result = db.users.update_one({
-            {"email": self.email},
-            {"$set": {"prefs": prefs}}
-        })
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+
+
+    # pref = { "destination_name": "Paris", "destination_type": "City", "activities": ["a1", "a2"] }
+    @staticmethod
+    def add_pref(email, pref):
+        result = db.users.update_one(
+            {"email": email},
+            {"$push": {"prefs": pref}}
+        )
         if result.matched_count > 0:
             logger.info("prefs updated successfully")
+            return True
         else:
             logger.info("no document match found for update")
+            return False
+
+
+    # pref = { "destination_name": "Maldives"}
+    @staticmethod
+    def remove_pref(email, pref):
+        result = db.users.update_one(
+            {"email": email},  # Filter to match the document to update
+            {"$pull": {"prefs": pref}}  # Remove the matching preference from the prefs array
+        )
+        if result.matched_count > 0:
+            logger.info("prefs updated successfully")
+            return True
+        else:
+            logger.info("no document match found for update")
+            return False
+
+
+    @staticmethod
+    def get_prefs(email):
+        result = db.users.find_one({"email": email})
+        if result["prefs"] is None:
+            return []
+        return result.get("prefs", [])
+
 
     @staticmethod
     def find_one(user_data):
         user_dict = db.users.find_one(user_data) 
-        if user_dict:
-            # Initialize the User object with the hashed password
-            return User(user_dict['email'], user_dict['password'], password_hashed=True)
-        else:
+        if user_dict is None:
             return None
+        # Initialize the User object with the hashed password
+        return User(user_dict['email'], user_dict['password'], password_hashed=True)
 
-    def check_password(self, password):
-        return check_password_hash(self.password, password)
