@@ -1,5 +1,8 @@
 from db_config import db
 from werkzeug.security import generate_password_hash, check_password_hash
+import logging
+
+logger = logging.getLogger(__name__)
 
 class User:
     def __init__(self, email, password, password_hashed=False):
@@ -17,8 +20,15 @@ class User:
         }
         db.users.insert_one(user_data)
 
-    def add_pref(self):
-        pass
+    def update_prefs(self, prefs):
+        result = db.users.update_one({
+            {"email": self.email},
+            {"$set": {"prefs": prefs}}
+        })
+        if result.matched_count > 0:
+            logger.info("prefs updated successfully")
+        else:
+            logger.info("no document match found for update")
 
     @staticmethod
     def find_one(user_data):

@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.user import User
+from models.destination import Destination
 
 bp = Blueprint("travel_bp", __name__)
 
@@ -17,8 +18,8 @@ def add_pref():
 def recommend():
     current_user_email = get_jwt_identity()
     # get current_user data(preference vector) from db and run recommendation engine(ann index search)
-
-    return {"recommendations": ["place1", "place2", "place3"]}, 200
+    data = Destination.find_by_index(2)
+    return {"recommendations": data}, 200
 
 
 @bp.route("/protected")
@@ -26,8 +27,3 @@ def recommend():
 def protected():
     current_user_email = get_jwt_identity()
     return f"protected route works {current_user_email}", 200
-
-
-@bp.route("/")
-def travel():
-    return "Flask Server for Travel Recommendation", 200

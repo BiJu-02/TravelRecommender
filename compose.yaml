@@ -16,8 +16,8 @@ services:
       - MONGO_URI=mongodb://mongo:27017/TravelRecDB
     # develop:
     #   watch:
-    #     - path: ./FlaskApp
-    #       action: rebuild
+    #     - path: ./backend
+    #       action: sync
 
   mongo:
     image: mongo
