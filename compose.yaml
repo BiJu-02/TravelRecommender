@@ -1,0 +1,30 @@
+services:
+  frontend:
+      build: ./frontend
+      ports:
+        - "3000:80"
+      depends_on:
+        - backend
+
+  backend:
+    build: ./backend
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/TravelRecDB
+    # develop:
+    #   watch:
+    #     - path: ./FlaskApp
+    #       action: rebuild
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+
+volumes:
+  mongodata:
