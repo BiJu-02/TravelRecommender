@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../components/Header';
 import RecomCard from '../components/RecomCard';
 import { useNavigate } from 'react-router-dom';
 
 const RecommendPage = () => {
+  const recom_cards = useState({});
   const navigate = useNavigate();
 
   const handleBackToLanding = () => {
@@ -22,7 +23,13 @@ const RecommendPage = () => {
       </Header>
       <div className="container mx-auto py-8">
         <h2 className="text-2xl font-bold mb-4">Preferences</h2>
-        <RecomCard />
+        {
+          recom_cards.map((card, index) => (
+            <div key={index} className="mb-8 w-full max-w-md">
+              <RecomCard />
+            </div>
+          ))
+        }
       </div>
     </div>
   );

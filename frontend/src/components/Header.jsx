@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../utils/auth';
 
-const Header = () => {
+const Header = ({ onRecommend }) => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -11,11 +11,13 @@ const Header = () => {
   };
 
   const handleRecommend = () => {
+    // call function from homepage
+    onRecommend();
     navigate('/preference');
   };
 
   return (
-    <header className="bg-gray-800 text-white py-4">
+    <nav className="bg-gray-800 text-white py-4 fixed top-0 left-0 w-full z-10">
       <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-xl font-bold">My App</h1>
         <nav>
@@ -33,7 +35,7 @@ const Header = () => {
           </button>
         </nav>
       </div>
-    </header>
+    </nav>
   );
 };
 

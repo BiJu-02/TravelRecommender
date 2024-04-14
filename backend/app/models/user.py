@@ -25,6 +25,20 @@ class User:
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
+    # pref = [ { "destination_name": "p1", "destination_type": "t1", "activities": ["a1", "a2"] }, ... ]
+    @staticmethod
+    def add_prefs(email, prefs):
+        result = db.users.update_one(
+            {"email": email},
+            {"$set": {"prefs": prefs}}
+        )
+        if result.matched_count > 0:
+            logger.info("prefs updated successfully")
+            return True
+        else:
+            logger.info("no document match found for update")
+            return False
+
 
     # pref = { "destination_name": "Paris", "destination_type": "City", "activities": ["a1", "a2"] }
     @staticmethod

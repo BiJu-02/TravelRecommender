@@ -18,29 +18,18 @@ index = faiss.read_index(index_file_path)
 
 bp = Blueprint("travel_bp", __name__)
 
-# post_data = { "destination_name": "Paris", "destination_type": "City", "activities": ["a1", "a2"] }
-@bp.route("/add-pref", methods=["POST"])
+
+@bp.route("/add-prefs", methods=["POST"])
 @jwt_required()
-def add_pref():
+def add_prefs():
     current_user_email = get_jwt_identity()
     post_data = request.json
+    logger.info(f"post data: {post_data}")
     # validate post_data...check if name, type and activity is part of dataset
 
-    if not User.add_pref(current_user_email, post_data):
+    if not User.add_prefs(current_user_email, post_data["prefs"]):
         return {"msg": "server error occured"}, 500
     return {"msg": "travel destination added successfully"}, 201
-
-# post_data = { "destination_name": "Maldives"}
-@bp.route("/remove-pref", methods=["POST"])
-@jwt_required()
-def remove_pref():
-    current_user_email = get_jwt_identity()
-    post_data = request.json
-    # validate post_data...check if name is part of dataset
-
-    if not User.remove_pref(current_user_email, post_data):
-        return {"msg": "server error occured"}, 500
-    return {"msg": "travel destination removed successfully"}, 201 
 
 
 @bp.route("/get-prefs")

@@ -6,21 +6,19 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import RecommendPage from './pages/RecommendPage';
 
-import { isAuthenticated } from './utils/auth';
 
 
 const App = () => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const checkAuth = async () => {
-    const authenticated = await isAuthenticated();
-    setIsLoggedIn(authenticated);
-    setLoading(false);
-  };
 
   useEffect(() => {
-    checkAuth();
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      setIsLoggedIn(true);
+      setLoading(false);
+    }
   }, []);
   const PrivateRoute = ({ children }) => {
     console.log("is logged in(state)", isLoggedIn);

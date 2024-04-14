@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import DestinationInput from './DestinationInput';
 import TagInput from './TagInput';
 
-const InputCard = ({ onDelete }) => {
-  const [destination, setDestination] = useState('');
-  const [tags1, setTags1] = useState([]);
-  const [tags2, setTags2] = useState([]);
+const InputCard = ({ destinationName, destinationType, activities, currentIdx, updateFuncs, onDelete }) => {
+  const [destination, setDestination] = useState(destinationName);
+  const [tags1, setTags1] = useState(destinationType);
+  const [tags2, setTags2] = useState(activities);
 
   return (
     <div className="bg-white rounded-lg shadow-md p-4 max-w-md w-full relative">
@@ -18,21 +18,21 @@ const InputCard = ({ onDelete }) => {
       </button>
       <div className="mb-4">
         <label htmlFor="destination" className="block font-bold mb-2">
-          Destination
+          Favourite destination name
         </label>
-        <DestinationInput onChange={setDestination} />
+        <DestinationInput destName={destination} currentIdx={currentIdx} onChange={updateFuncs[0]} />
       </div>
       <div className="mb-4">
         <label htmlFor="tags1" className="block font-bold mb-2">
-          Tags 1
+          Aspects you liked
         </label>
-        <TagInput onChange={setTags1} />
+        <TagInput currTags={tags1} tagType={"destination_type"} onChange={updateFuncs[1]} currentIdx={currentIdx} currDest={destinationName} />
       </div>
       <div className="mb-4">
         <label htmlFor="tags2" className="block font-bold mb-2">
-          Tags 2
+          Activities you enjoyed
         </label>
-        <TagInput onChange={setTags2} />
+        <TagInput currTags={tags2} tagType={"activities"} onChange={updateFuncs[2]} currentIdx={currentIdx} currDest={destinationName} />
       </div>
     </div>
   );
