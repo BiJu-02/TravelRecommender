@@ -12,8 +12,6 @@ def to_list(comma_separated_string):
 
 def init_recom_index(data):
     index_file_path = 'faiss_index.bin'
-    if os.path.exists(index_file_path):
-        return
 
     df = pd.DataFrame(data)
 
@@ -38,6 +36,9 @@ def init_recom_index(data):
 
     if Destination.get_unique_labels() is None:
         Destination.add_unique_labels(output_data)
+        
+    if os.path.exists(index_file_path):
+        return
 
     combined_features = np.hstack((place_type_encoded, activities_encoded))
 

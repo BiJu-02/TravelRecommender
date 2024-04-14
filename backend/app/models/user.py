@@ -73,7 +73,7 @@ class User:
     @staticmethod
     def get_prefs(email):
         result = db.users.find_one({"email": email})
-        if result["prefs"] is None:
+        if "prefs" not in result or result["prefs"] is None:
             return []
         return result.get("prefs", [])
 
