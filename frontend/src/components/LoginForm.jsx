@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../utils/auth'
 
 const LoginForm = () => {
@@ -50,6 +50,11 @@ const LoginForm = () => {
             >
                 Login
             </button>
+            <div className="mt-4 text-center">
+                <p>
+                    Don't have an account yet? <Link to="/register" className="text-blue-500 hover:text-blue-700">Register</Link>
+                </p>
+            </div>
         </form>
     );
 };

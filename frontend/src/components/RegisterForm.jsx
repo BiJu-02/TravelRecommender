@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { register } from "../utils/auth";
 
 const RegisterForm = () => {
@@ -68,6 +68,11 @@ const RegisterForm = () => {
             >
                 Register
             </button>
+            <div className="mt-4 text-center">
+                <p>
+                    Already have an account? <Link to="/login" className="text-blue-500 hover:text-blue-700">Login</Link>
+                </p>
+            </div>
         </form>
     );
 };

@@ -15,7 +15,6 @@ class Destination:
             "activities": { "$slice": [idx, 1] },
         }
         data = db.destinationsData.find_one({}, projection)
-        logger.info(f"data: {data}")
         return data
 
 

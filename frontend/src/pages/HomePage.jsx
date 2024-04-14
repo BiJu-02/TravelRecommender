@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import InputCard from '../components/InputCard';
+import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
 	// Initialize the cards state with the initial cards array
 	const [cards, setCards] = useState([]);
+	const navigate = useNavigate();
 
 	const get_user_prefs = async () => {
 		const resp = await fetch("http://localhost:4000/get-prefs", {
@@ -12,6 +14,9 @@ const HomePage = () => {
 				"Authorization": "Bearer " + localStorage.getItem("access_token")
 			}
 		})
+		if (!resp.ok) {
+			navigate("/login", { replace: true });
+		}
 		const respJson = await resp.json();
 		// setCards(data)
 		console.log(respJson.data);
@@ -19,6 +24,7 @@ const HomePage = () => {
 	}
 
 	const add_user_prefs = async () => {
+		console.log("add_prefs called", cards);
 		try {
 			const resp = await fetch("http://localhost:4000/add-prefs", {
 				method: "POST",
@@ -26,9 +32,10 @@ const HomePage = () => {
 					"Content-Type": "application/json",
 					"Authorization": "Bearer " + localStorage.getItem("access_token")
 				},
-				body: JSON.stringify(cards)
+				body: JSON.stringify({prefs: cards})
 			});
 			if (!resp.ok) {
+				navigate("/login", { replace: true });
 				console.log("response not ok for adding prefs");
 			}
 		} catch (err) {
@@ -82,9 +89,9 @@ const HomePage = () => {
 
 	return (
 		<div>
-			<Header onRecommend={add_user_prefs} />
+			<Header onRecommend={add_user_prefs} isRecommend={true} />
 			<div className="container mx-auto py-8 flex flex-col items-center mt-[100px]">
-				{cards.map((card, index) => (
+				{cards?.map((card, index) => (
 					<div key={index} className="mb-8 w-full max-w-md z-0">
 						<InputCard destinationName={card.destination_name} destinationType={card.destination_type} activities={card.activities} currentIdx={index} updateFuncs={[updateDestName, updateDestType, updateActivities]} onDelete={() => removeCard(index)} />
 					</div>

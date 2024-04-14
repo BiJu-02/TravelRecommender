@@ -18,7 +18,7 @@ const InputCard = ({ destinationName, destinationType, activities, currentIdx, u
       </button>
       <div className="mb-4">
         <label htmlFor="destination" className="block font-bold mb-2">
-          Favourite destination name
+          Favourite destination
         </label>
         <DestinationInput destName={destination} currentIdx={currentIdx} onChange={updateFuncs[0]} />
       </div>

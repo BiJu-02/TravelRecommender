@@ -51,7 +51,9 @@ def recommend():
     #     'destination_type': ['Snow-Covered', 'Mountain', 'Snow-Covered', 'City'],
     #     'activities': ['Trekking', 'Mountaineering', 'Shopping']
     # }
-
+    num_prefs = len(prefs)
+    prefs_names = [pref["destination_name"] for pref in prefs]
+    logger.info(f"pref names of user {prefs_names}")
     user_preferences = {
         'destination_type': [],
         'activities': []
@@ -73,12 +75,15 @@ def recommend():
     combined_weights = np.hstack((place_type_weights, activities_weights))
     combined_weights_normalized = normalize(combined_weights.reshape(1, -1), norm='l1')
 
-    k = 5  # Number of nearest neighbors to find
+    k = 5 + num_prefs # Number of nearest neighbors to find
     D, I = index.search(combined_weights_normalized.astype(np.float32), k)
     logger.info(f"indices found: {I}")
     data = []
     for i in I[0]:
         result = Destination.find_by_index(int(i))
+        logger.info(result["destination_name"])
+        if result["destination_name"][0] in prefs_names:
+            continue
         data.append({
             "destination_name": result["destination_name"],
             "destination_type": result["destination_type"],

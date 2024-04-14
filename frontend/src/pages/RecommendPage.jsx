@@ -1,38 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import RecomCard from '../components/RecomCard';
 import { useNavigate } from 'react-router-dom';
 
 const RecommendPage = () => {
-  const recom_cards = useState({});
-  const navigate = useNavigate();
+	const [recom_cards, setRcomCards] = useState([]);
+	const navigate = useNavigate();
 
-  const handleBackToLanding = () => {
-    navigate('/');
-  };
+	const handleBackToLanding = () => {
+		navigate('/');
+	};
+	useEffect(() => {
+		const fetchRecomendations = async () => {
+			const resp = await fetch('http://localhost:4000/recommend', {
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": "Bearer " + localStorage.getItem("access_token")
+				},
+			});
+			if (!resp.ok) {
+				navigate("/login", { replace: true })
+			}
+			const recomData = await resp.json();
+			setRcomCards(recomData.data);
+			console.log(recomData);
+		}
+		fetchRecomendations();
+	}, [])
 
-  return (
-    <div>
-      <Header>
-        <button
-          onClick={handleBackToLanding}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          Back to Landing
-        </button>
-      </Header>
-      <div className="container mx-auto py-8">
-        <h2 className="text-2xl font-bold mb-4">Preferences</h2>
-        {
-          recom_cards.map((card, index) => (
-            <div key={index} className="mb-8 w-full max-w-md">
-              <RecomCard />
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  );
+	return (
+		<div>
+			<Header isRecommend={false}>
+				<button
+					onClick={handleBackToLanding}
+					className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+				>
+					Back to Landing
+				</button>
+			</Header>
+			<div className="container mx-auto py-8 mt-[100px]">
+				<h4 className="text-4xl font-bold mb-10 text-center">Recommendations For You</h4>
+				<div className='flex gap-10 flex-wrap'>
+					{
+						recom_cards.map((card, index) => (
+							<div key={index} className="mb-8 w-full max-w-md">
+								<RecomCard data={card} />
+							</div>
+						))
+					}
+				</div>
+			</div>
+		</div>
+	);
 };
 
 export default RecommendPage;
