@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 
 from waitress import serve
 import os
@@ -10,6 +11,7 @@ from db_config import init_db
 
 
 app = Flask(__name__)
+CORS(app)
 
 logging.basicConfig(level=logging.DEBUG)
 

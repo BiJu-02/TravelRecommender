@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from models.user import User
 
 bp = Blueprint("auth_bp", __name__)
@@ -15,7 +15,7 @@ def register():
         password=data["password"]
     )
     user.save()
-    return jsonify({"msg": "User registered successfully"}), 201
+    return {"msg": "User registered successfully"}, 201
 
 
 @bp.route("/login", methods=["POST"])
@@ -27,4 +27,15 @@ def login():
         return jsonify({"msg": "Invalid username or password"}), 401
 
     access_token = create_access_token(identity=user.email)
-    return jsonify({"msg": "Logged in successfully", "access_token": access_token}), 200
+    return {"msg": "Logged in successfull", "access_token": access_token}
+
+
+@bp.route('/auth-check', methods=['GET'])
+@jwt_required(optional=True)
+def check_auth():
+    current_user = get_jwt_identity()
+    if current_user:
+        return { "logged_in": True, "user": current_user }, 200
+    else:
+        return { "logged_in": False }, 200
+

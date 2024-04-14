@@ -3,13 +3,15 @@ import React, { useState, useEffect } from 'react';
 const DestinationInput = ({ onChange }) => {
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState([]);
+  const [optionFixed, setOptionFixed] = useState(false);
 
   useEffect(() => {
+    if (optionFixed) { return; }
     const fetchOptions = async () => {
       try {
-        const response = await fetch(`/api/destinations?q=${inputValue}`);
+        const response = await fetch(`http://localhost:4000/get-dest-name?input=${inputValue}`);
         const data = await response.json();
-        setOptions(data);
+        setOptions(data.desination_list);
       } catch (error) {
         console.error('Error fetching options:', error);
       }
@@ -28,7 +30,8 @@ const DestinationInput = ({ onChange }) => {
 
   const handleOptionSelect = (option) => {
     onChange(option);
-    setInputValue('');
+    setInputValue(option);
+    setOptionFixed(true);
     setOptions([]);
   };
 

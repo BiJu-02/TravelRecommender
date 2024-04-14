@@ -1,13 +1,24 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { register } from "../utils/auth";
 
 const RegisterForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confPassword, setConfPassword] = useState('');
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Implement registration logic here
+        if (password !== confPassword) {
+            alert("confirm password does not match");
+            console.log("confirm password mismatch")
+            return;
+        }
+        if (await register(email, password)) {
+            navigate('/login', { replace: true });
+        }
+
     };
 
     return (

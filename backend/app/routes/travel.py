@@ -18,6 +18,7 @@ index = faiss.read_index(index_file_path)
 
 bp = Blueprint("travel_bp", __name__)
 
+# post_data = { "destination_name": "Paris", "destination_type": "City", "activities": ["a1", "a2"] }
 @bp.route("/add-pref", methods=["POST"])
 @jwt_required()
 def add_pref():
@@ -29,7 +30,7 @@ def add_pref():
         return {"msg": "server error occured"}, 500
     return {"msg": "travel destination added successfully"}, 201
 
-
+# post_data = { "destination_name": "Maldives"}
 @bp.route("/remove-pref", methods=["POST"])
 @jwt_required()
 def remove_pref():
@@ -40,6 +41,7 @@ def remove_pref():
     if not User.remove_pref(current_user_email, post_data):
         return {"msg": "server error occured"}, 500
     return {"msg": "travel destination removed successfully"}, 201 
+
 
 @bp.route("/get-prefs")
 @jwt_required()

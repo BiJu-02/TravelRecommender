@@ -11,17 +11,25 @@ import { isAuthenticated } from './utils/auth';
 
 const App = () => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const checkAuth = async () => {
+    const authenticated = await isAuthenticated();
+    setIsLoggedIn(authenticated);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const authenticated = isAuthenticated();
-      setIsLoggedIn(authenticated);
-    };
     checkAuth();
   }, []);
   const PrivateRoute = ({ children }) => {
+    console.log("is logged in(state)", isLoggedIn);
     return isLoggedIn ? children : <Navigate to="/login" replace />;
   };
+
+  if (loading) { // Show a loading indicator or return null while checking auth
+    return <div>Loading...</div>;
+  }
 
   return (
     <Router>

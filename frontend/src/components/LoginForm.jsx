@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { login } from '../utils/auth'
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Implement login logic here
+        if (await login(email, password)) {
+            navigate('/', { replace: true });
+        } else {
+            alert("wrong email or password");
+        }
     };
 
     return (
