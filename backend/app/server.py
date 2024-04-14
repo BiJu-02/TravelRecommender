@@ -20,11 +20,12 @@ with open("./db_init_data/data.json", "r") as file:
     from recom_engine import init_recom_index
     init_recom_index(data)
 
-from routes import test, auth, travel
+from routes import test, auth, travel, destination
 
 app.register_blueprint(test.bp)
 app.register_blueprint(auth.bp)
 app.register_blueprint(travel.bp)
+app.register_blueprint(destination.bp)
 
 if __name__ == "__main__":
     serve(app, host="0.0.0.0", port=4000)
