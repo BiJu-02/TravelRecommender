@@ -73,6 +73,6 @@ To run the project, you will use Docker Compose. This will start the frontend Re
     After filling in as many destinations as you want, click on **Recommend**.
 
 ![Screenshot 2024-04-16 194050](https://github.com/BiJu-02/TravelRecommender/assets/67651024/b36cc93d-fdc6-498d-8eb1-e802210536b5)
-The page will show you 6 different travel destinations that you could visit based on your prefernces. On the header you can press **Preferences** button to go back to editing the travel destinations that you input or press on **Logout** button to log out.
+The page will show you 5 different travel destinations that you could visit based on your prefernces. On the header you can press **Preferences** button to go back to editing the travel destinations that you input or press on **Logout** button to log out.
 
 
