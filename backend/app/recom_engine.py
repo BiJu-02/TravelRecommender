@@ -3,9 +3,11 @@ import numpy as np
 import pandas as pd
 import faiss
 import os
+import logging
 
 from models.destination import Destination
 
+logger = logging.getLogger(__name__)
 
 def to_list(comma_separated_string):
     return [item.strip() for item in comma_separated_string.split(',')]
@@ -13,6 +15,7 @@ def to_list(comma_separated_string):
 def init_recom_index(data):
     index_file_path = 'faiss_index.bin'
 
+    logger.info(data)
     df = pd.DataFrame(data)
 
     # Convert the string of labels into lists

@@ -23,10 +23,10 @@ const HomePage = () => {
 		setCards(respJson.data);
 	}
 
-	const add_user_prefs = async () => {
-		console.log("add_prefs called", cards);
+	const update_user_prefs = async () => {
+		console.log("update_prefs called", cards);
 		try {
-			const resp = await fetch("http://localhost:4000/add-prefs", {
+			const resp = await fetch("http://localhost:4000/update-prefs", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -89,7 +89,7 @@ const HomePage = () => {
 
 	return (
 		<div>
-			<Header onRecommend={add_user_prefs} isRecommend={true} />
+			<Header onRecommend={update_user_prefs} isRecommend={true} />
 			<div className="container mx-auto py-8 flex flex-col items-center mt-[100px]">
 				{cards?.map((card, index) => (
 					<div key={index} className="mb-8 w-full max-w-md z-0">

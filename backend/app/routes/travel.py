@@ -2,24 +2,20 @@ from flask import Blueprint, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import logging
 
-from sklearn.preprocessing import normalize
-import numpy as np
-import faiss
-
 from models.user import User
-from models.destination import Destination
 
-from utils.weights import preferences_to_weighted_scores
+# from utils.ann import preferences_to_weighted_scores
+from utils.ann import get_recommendations
 
 logger = logging.getLogger(__name__)
 
-index_file_path = 'faiss_index.bin'
-index = faiss.read_index(index_file_path)
+# index_file_path = 'faiss_index.bin'
+# index = faiss.read_index(index_file_path)
 
 bp = Blueprint("travel_bp", __name__)
 
 
-@bp.route("/add-prefs", methods=["POST"])
+@bp.route("/update-prefs", methods=["POST"])
 @jwt_required()
 def add_prefs():
     current_user_email = get_jwt_identity()
@@ -27,7 +23,7 @@ def add_prefs():
     logger.info(f"post data: {post_data}")
     # validate post_data...check if name, type and activity is part of dataset
 
-    if not User.add_prefs(current_user_email, post_data["prefs"]):
+    if not User.update_prefs(current_user_email, post_data["prefs"]):
         return {"msg": "server error occured"}, 500
     return {"msg": "travel destination added successfully"}, 201
 
@@ -36,61 +32,32 @@ def add_prefs():
 @jwt_required()
 def get_prefs():
     current_user_email = get_jwt_identity()
-    result = User.get_prefs(current_user_email)
-    return {"data": result}, 200
+    user = User.get_user(current_user_email)
+    if user is None:
+        return {"msg": "user with this email does not exist in db"}, 401
+    return {"data": user.get("prefs", [])}, 200
 
 
 @bp.route("/recommend")
 @jwt_required()
 def recommend():
     current_user_email = get_jwt_identity()
-    # get current_user data from db, prepare weights and run recommendation engine(ann index search)\
+    user = User.get_user(current_user_email)
+    if user is None:
+        return {"msg": "user with this email does not exist in db"}, 401
 
-    prefs = User.get_prefs(current_user_email)
-    # user_preferences = {
-    #     'destination_type': ['Snow-Covered', 'Mountain', 'Snow-Covered', 'City'],
-    #     'activities': ['Trekking', 'Mountaineering', 'Shopping']
-    # }
-    num_prefs = len(prefs)
-    prefs_names = [pref["destination_name"] for pref in prefs]
-    logger.info(f"pref names of user {prefs_names}")
-    user_preferences = {
-        'destination_type': [],
-        'activities': []
-    }
+    existing_recom = user.get("recoms", [])
+    recom_changed = user.get("recom_changed", False)
+    if not recom_changed and len(existing_recom) > 0:
+        return {"data": existing_recom}, 200
 
-    for pref in prefs:
-        for destination_type in pref["destination_type"]:
-            user_preferences["destination_type"].append(destination_type)
-        for activity in pref["activities"]:
-            user_preferences["activities"].append(activity)
-    
-    # fetch this from db and assemble like this
+    # get current_user data from db, prepare weights and run recommendation engine(ann index search)
+    prefs = user.get("prefs", [])
+    recom = get_recommendations(prefs)
 
-    unique_labels = Destination.get_unique_labels()
-
-    place_type_weights = preferences_to_weighted_scores(user_preferences['destination_type'], unique_labels["unique_destination_types"])
-    activities_weights = preferences_to_weighted_scores(user_preferences['activities'], unique_labels["unique_activities"])
-
-    combined_weights = np.hstack((place_type_weights, activities_weights))
-    combined_weights_normalized = normalize(combined_weights.reshape(1, -1), norm='l1')
-
-    k = 5 + num_prefs # Number of nearest neighbors to find
-    D, I = index.search(combined_weights_normalized.astype(np.float32), k)
-    logger.info(f"indices found: {I}")
-    data = []
-    for i in I[0]:
-        result = Destination.find_by_index(int(i))
-        logger.info(result["destination_name"])
-        if result["destination_name"][0] in prefs_names:
-            continue
-        data.append({
-            "destination_name": result["destination_name"],
-            "destination_type": result["destination_type"],
-            "activities": result["activities"]
-        })
-
-    return {"data": data}, 200
+    User.update_recoms(current_user_email, recom)
+    # save this in db with an extra field "changed": false
+    return {"data": recom}, 200
 
 
 

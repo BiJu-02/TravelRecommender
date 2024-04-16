@@ -64,9 +64,6 @@ class Destination:
 
     @staticmethod
     def get_unique_labels():
-        result = db.destinationsData.find_one({"unique_activities": {"$exists": True}})
-        if result is None:
-            return None
-        return result
+        return db.destinationsData.find_one({"unique_activities": {"$exists": True}})
 
 
