@@ -44,7 +44,7 @@ def get_recommendations(prefs):
     combined_weights = np.hstack((place_type_weights, activities_weights))
     combined_weights_normalized = normalize(combined_weights.reshape(1, -1), norm='l1')
 
-    k = 5 + num_prefs # Number of nearest neighbors to find
+    k = 6 + num_prefs # Number of nearest neighbors to find
     D, I = index.search(combined_weights_normalized.astype(np.float32), k)  # returns distances(sorted ascending) and indices of the destinations
     logger.info(f"indices found: {I}")
     data = []
