@@ -47,26 +47,32 @@ To run the project, you will use Docker Compose. This will start the frontend Re
 
 ## Using the Web App
 
-1. **Open web app on browser**
 
+![Screenshot 2024-04-16 193923](https://github.com/BiJu-02/TravelRecommender/assets/67651024/830fa900-a4f4-4476-9497-be52cf50fa97)
     Once the containers start running, open the browser and enter the URL **localhost:3000**
 
-2. **Register and Login**
-
+![Screenshot 2024-04-16 193837](https://github.com/BiJu-02/TravelRecommender/assets/67651024/755a1143-d9b0-4103-85ad-00777c37cd49)
     You would see the login page on the browser. On the bottom of the form click on **register** below **login** button.
-
+    
+![Screenshot 2024-04-16 195109](https://github.com/BiJu-02/TravelRecommender/assets/67651024/a19cb485-2b79-43f8-b855-d22f84ab3caf)
     Once on the register page enter your email id and set a password and click **register**.
-
+    
+![Screenshot 2024-04-16 193909](https://github.com/BiJu-02/TravelRecommender/assets/67651024/f6a5eb19-202d-4424-ba00-19561bab71f7)
     You will be back on the login page. Enter the same email id and password and click **login**.
 
+![Screenshot 2024-04-16 193935](https://github.com/BiJu-02/TravelRecommender/assets/67651024/af89f180-77cf-4661-86c8-8f0ac95ededb)
     The browser will show the home page. Click on **Add Destination** button.
-
+    
+![Screenshot 2024-04-16 193956](https://github.com/BiJu-02/TravelRecommender/assets/67651024/f69cb428-7ec7-4b04-a194-630a3ab1298c)
     On the card type in a **travel destination name**, you will be suggested options as you type. Select one from them (The travel destinations are limited to the one's that are in the dataset).
 
+![Screenshot 2024-04-16 194015](https://github.com/BiJu-02/TravelRecommender/assets/67651024/1e4414e3-48a0-4eb7-86d2-215048e50822)
     Click on the box below **Aspects you liked** and select the options you feel like you liked about the destination. Do the same for **Activities you enjoyed**.
     
+![Screenshot 2024-04-16 194030](https://github.com/BiJu-02/TravelRecommender/assets/67651024/98be7f12-9016-4f3f-adaa-a67b5d99c65c)
     After filling in as many destinations as you want, click on **Recommend**.
 
-    The page will show you 6 different travel destinations that you could visit based on your prefernces. On the header you can press **Preferences** button to go back to editing the travel destinations that you input or press on **Logout** button to log out.
+![Screenshot 2024-04-16 194050](https://github.com/BiJu-02/TravelRecommender/assets/67651024/b36cc93d-fdc6-498d-8eb1-e802210536b5)
+The page will show you 6 different travel destinations that you could visit based on your prefernces. On the header you can press **Preferences** button to go back to editing the travel destinations that you input or press on **Logout** button to log out.
 
 
