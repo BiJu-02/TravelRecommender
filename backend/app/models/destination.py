@@ -7,6 +7,7 @@ logger = logging.getLogger(__name__)
 
 class Destination:
 
+    # method to get only 1 element from the array inside the destinations doc based on the index
     @staticmethod
     def find_by_index(idx):
         projection = {
@@ -18,6 +19,7 @@ class Destination:
         return data
 
 
+    # method to get only 1 element from the array inside the destinations doc based on the destination name
     @staticmethod
     def find_by_name(name_str):
         projection = {
@@ -44,6 +46,7 @@ class Destination:
             return {}
 
 
+    # method to get destination names that contains a given input string
     @staticmethod
     def find_by_similar_name(name_str):
         name_str = re.escape(name_str)

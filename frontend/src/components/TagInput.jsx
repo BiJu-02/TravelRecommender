@@ -6,6 +6,7 @@ const TagInput = ({ currTags, tagType, onChange, currentIdx, currDest }) => {
 	const [tags, setTags] = useState(currTags);
 	
 
+	// depending on the destination name user chose, fetch the labels applicable for that destination
 	const fetchOptions = async () => {
 		try {
 			if (currDest === "") {
@@ -35,12 +36,14 @@ const TagInput = ({ currTags, tagType, onChange, currentIdx, currDest }) => {
 			const newTags = [...tags, option]
 			setTags(newTags);
 			setOptions([]);
+			// reflect changes in the homepage cards state
 			onChange(currentIdx, newTags);
 		}
 	};
 
 	const handleRemoveTag = (tagToRemove) => {
 		const newTags = tags.filter((tag) => tag !== tagToRemove);
+		// reflect changes in the homepage cards state
 		onChange(currentIdx, newTags);
 		setTags(newTags);
 	};

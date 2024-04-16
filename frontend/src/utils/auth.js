@@ -1,5 +1,5 @@
 
-
+// store the access token in localstorage
 export const login = async (email, password) => {
 	try {
 		const resp = await fetch("http://localhost:4000/login", {
@@ -43,6 +43,7 @@ export const register = async (email, password) => {
 	return false;
 };
 
+// clear the access token in localstorage
 export const logout = async () => {
 	try {
 		localStorage.removeItem('access_token');
@@ -53,24 +54,3 @@ export const logout = async () => {
 	return false;
 };
 
-
-export const isAuthenticated = async () => {
-	try {
-		const token = localStorage.getItem("access_token");
-		if (!token) { return false; }
-		const resp = await fetch("http://localhost:4000/auth-check", {
-			method: "GET",
-			headers: {
-				"Authorization": "Bearer " + token
-			}
-		});
-		const data = await resp.json();
-		if (data.logged_in) {
-			console.log("yup user is logged in no doubt");
-			return true;
-		}
-	} catch (err) {
-		console.error("isAuthenticated error: ", err)
-	}
-	return false;
-};

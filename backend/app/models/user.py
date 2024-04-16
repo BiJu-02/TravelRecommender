@@ -4,6 +4,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
+# index for 
 db.users.create_index("email", unique=True)
 
 class User:
@@ -58,30 +60,4 @@ class User:
             logger.info("(update_recoms)no document match found for update")
             return False
 
-
-
-    # def check_password(self, password):
-    #     return check_password_hash(self.password, password)
-
-
-    # @staticmethod
-    # def get_prefs(email):
-    #     user = get_user(email)
-    #     return user.get("prefs", [])
-
-    
-
-
-    # @staticmethod
-    # def find_one(email):
-    #     user_dict = db.users.find_one({"email": email}) 
-    #     if user_dict is None:
-    #         return None
-    #     # Initialize the User object with the hashed password
-    #     return User(user_dict['email'], user_dict['password'])
-
-    
-    # @staticmethod
-    # def get_saved_recom(email):
-    #     pass
 

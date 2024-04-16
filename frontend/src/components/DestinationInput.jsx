@@ -5,6 +5,8 @@ const DestinationInput = ({ destName, onChange, currentIdx }) => {
 	const [options, setOptions] = useState([]);
 	const [optionFixed, setOptionFixed] = useState(destName === "" ? false : true);
 
+
+	// fetch destionation name options which contains the string the user has typed so far 
 	useEffect(() => {
 
 		if (optionFixed) { return; }
@@ -31,6 +33,7 @@ const DestinationInput = ({ destName, onChange, currentIdx }) => {
 	};
 
 	const handleOptionSelect = (option) => {
+		// reflect changes in the homepage cards state
 		onChange(currentIdx, option);
 		setInputValue(option);
 		setOptionFixed(true);

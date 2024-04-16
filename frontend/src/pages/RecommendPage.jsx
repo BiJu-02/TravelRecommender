@@ -10,6 +10,8 @@ const RecommendPage = () => {
 	const handleBackToLanding = () => {
 		navigate('/');
 	};
+
+	// fetch all the recommendations once as soon as the page loads
 	useEffect(() => {
 		const fetchRecomendations = async () => {
 			const resp = await fetch('http://localhost:4000/recommend', {
@@ -19,6 +21,7 @@ const RecommendPage = () => {
 				},
 			});
 			if (!resp.ok) {
+				// most likely the token expired or was not valid
 				navigate("/login", { replace: true })
 			}
 			const recomData = await resp.json();

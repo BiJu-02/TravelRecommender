@@ -4,10 +4,11 @@ import InputCard from '../components/InputCard';
 import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
-	// Initialize the cards state with the initial cards array
+	// The cards state contains all the users travel destination preferences
 	const [cards, setCards] = useState([]);
 	const navigate = useNavigate();
 
+	// called only once from within use effect for loading user's already filled data in home page 
 	const get_user_prefs = async () => {
 		const resp = await fetch("http://localhost:4000/get-prefs", {
 			headers: {
@@ -15,14 +16,14 @@ const HomePage = () => {
 			}
 		})
 		if (!resp.ok) {
+			// most likely the token expired or was not valid
 			navigate("/login", { replace: true });
 		}
 		const respJson = await resp.json();
-		// setCards(data)
-		console.log(respJson.data);
 		setCards(respJson.data);
 	}
 
+	// called right before going to the recommend page to save all the user's preferences
 	const update_user_prefs = async () => {
 		console.log("update_prefs called", cards);
 		try {
@@ -34,15 +35,19 @@ const HomePage = () => {
 				},
 				body: JSON.stringify({prefs: cards})
 			});
+
 			if (!resp.ok) {
+				// most likely the token expired or was not valid
 				navigate("/login", { replace: true });
-				console.log("response not ok for adding prefs");
 			}
 		} catch (err) {
 			console.error("errored while adding preferences")
 		}
 	}
 
+	// called when the page loads 1st time to get all the user's preferences 
+	// that user already filled out
+	// and show them in cards
 	useEffect(() => {
 		try {
 			get_user_prefs();
@@ -51,7 +56,10 @@ const HomePage = () => {
 		}
 	}, []);
 
-	// Function to add a new card
+	// all the functions for editing cards below are sent to InputCard component
+	// which sends all of them to respective input type components (DestinaionInput and TagInput)
+
+	// Function to add a new empty card
 	const addCard = () => {
 		const newCard = {
 			destination_name: '',
@@ -62,8 +70,6 @@ const HomePage = () => {
 	};
 
 	const removeCard = (index) => {
-		// update destination data in homepage here
-
 		const newCards = cards.filter((card, cardIndex) => cardIndex !== index);
 		setCards(newCards);
 	};

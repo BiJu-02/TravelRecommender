@@ -10,6 +10,7 @@ import RecommendPage from './pages/RecommendPage';
 
 const App = () => {
 
+	// check if the token exists in local storage to check if the user is logged in or not
 	const PrivateRoute = ({ children }) => {
 		const token = localStorage.getItem("access_token");
 		if (token) { return children; }

@@ -25,7 +25,7 @@ def init_recom_index(data):
     mlb_place_type = MultiLabelBinarizer()
     mlb_activities = MultiLabelBinarizer()
 
-    # Transform labels into one-hot encoded arrays
+    # Transform labels into encoded arrays
     place_type_encoded = mlb_place_type.fit_transform(df['destination_type'])
     activities_encoded = mlb_activities.fit_transform(df['activities'])
 
@@ -33,10 +33,11 @@ def init_recom_index(data):
     output_data["unique_destination_types"] = list(mlb_place_type.classes_)
     output_data["unique_activities"] = list(mlb_activities.classes_)
 
-
+    # store all the unique labels in the dataset if it already does not exist
     if Destination.get_unique_labels() is None:
         Destination.add_unique_labels(output_data)
-        
+    
+    # if index file already exists no need to create it again
     if os.path.exists(index_file_path):
         return
 

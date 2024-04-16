@@ -6,20 +6,23 @@ from models.user import User
 
 bp = Blueprint("auth_bp", __name__)
 
+
+# route for creating a new user and adding it in the db it the user already does not exist
 @bp.route("/register", methods=["POST"])
 def register():
     data = request.get_json()
-    temp = User.get_user(data["email"])
-    if temp:
-        return jsonify({"msg": "User with this email already exists"}), 409
     user = User(
         email=data["email"],
         passhash=generate_password_hash(data["password"])
     )
-    user.save()
+    
+    if not user.save():
+        return jsonify({"msg": "User with this email already exists"}), 409
+
     return {"msg": "User registered successfully"}, 201
 
 
+# route for authorizing the user by providing the user with JWT
 @bp.route("/login", methods=["POST"])
 def login():
     data = request.get_json()
