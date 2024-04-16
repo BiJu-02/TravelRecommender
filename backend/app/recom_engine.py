@@ -33,8 +33,6 @@ def init_recom_index(data):
     output_data["unique_destination_types"] = list(mlb_place_type.classes_)
     output_data["unique_activities"] = list(mlb_activities.classes_)
 
-    # place_type_labels = list(mlb_place_type.classes_)
-    # activity_labels = list(mlb_activities.classes_)
 
     if Destination.get_unique_labels() is None:
         Destination.add_unique_labels(output_data)
@@ -56,6 +54,7 @@ def init_recom_index(data):
     # Add vectors to the index
     index.add(combined_features)
 
-
     # Store the index
     faiss.write_index(index, index_file_path)
+
+

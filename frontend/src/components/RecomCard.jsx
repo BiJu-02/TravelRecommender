@@ -4,7 +4,6 @@ const RecomCard = ({ data }) => {
 	return (
 		<div className="bg-white rounded-lg shadow-xl p-4 flex flex-col gap-4 h-[250px]">
 			<div className='flex gap-2 w-full justify-center'>
-				<h4 className='text-lg font-bold'>Destination Name :</h4>
 				<h3 className="text-lg font-bold mb-2">{data.destination_name}</h3>
 			</div>
 			<div className='flex flex-col gap-2'>
