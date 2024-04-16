@@ -15,7 +15,6 @@ def to_list(comma_separated_string):
 def init_recom_index(data):
     index_file_path = 'faiss_index.bin'
 
-    logger.info(data)
     df = pd.DataFrame(data)
 
     # Convert the string of labels into lists
